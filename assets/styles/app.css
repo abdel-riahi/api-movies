@@ -1,0 +1,104 @@
+@import 'modal.css';
+/* list movies css*/
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+
+body {
+	background-image: rgb(239, 179, 179);
+	font-family: 'Muli', sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	min-height: 100vh;
+	margin: 0;
+}
+
+.movie {
+  margin-top: 10px;
+	background-color: rgb(240, 244, 248);
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	max-width: 100%;
+	margin: 20px;
+	overflow: hidden;
+	width: 600px;
+}
+
+.movie h6 {
+	opacity: 0.6;
+	margin: 0;
+	letter-spacing: 1px;
+}
+
+.movie h2 {
+	letter-spacing: 1px;
+	margin: 10px 0;
+}
+
+.movie-preview {
+	color: #fff;
+	padding: 30px;
+	max-width: 200px;
+}
+
+.movie-info {
+	padding: 30px;
+	position: relative;
+	width: 100%;
+}
+.fieldset{
+  border:1px solid rgb(245, 221, 221); 
+  border-radius:8px;
+  padding:6px
+}
+.fieldset legend{
+  font-style: oblique;
+  color: blueviolet;
+} 
+/* end list movies */
+
+/* sreach bar css */
+
+.search-form{
+  width: 100%;
+  display: flex;
+  margin-top: 2%;
+  justify-content: center;
+}
+
+form{
+	width: 600px;
+	height: 55px;
+	display: flex;
+}
+form input{
+	flex: 1;
+	border: none;
+	outline: none;
+	background: rgb(237, 233, 233);
+
+}
+form button{
+	background: rgb(244, 118, 99);
+	padding: 10px 50px;
+	border: none;
+	outline: none;
+	color: #fff;
+	letter-spacing: 1px;
+	cursor: pointer;
+}
+
+
+iframe {
+    display: block;
+    border-style:none;
+	width: 600px;
+    height: 400px;
+	margin-left: 2%;
+}
