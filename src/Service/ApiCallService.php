@@ -37,15 +37,15 @@ class ApiCallService
     {
             if ($paramsQuery["slug"] === "movie/popular")
         {
-            $listMovies = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey);
+            $listMovies = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey . '&' . $this->language);
           if(!empty($listMovies)){
             $response = $listMovies;
-            $movie = $this->getResponse($this->baseUrl . 'movie/' . $response['results'][0]['id']   . '/videos?api_key=' . $this->apiKey);
+            $movie = $this->getResponse($this->baseUrl . 'movie/' . $response['results'][0]['id']   . '/videos?api_key=' . $this->apiKey . '&' . $this->language);
             $response ['key'] = $movie['results'][0]['key'];
             return $response ;
           }
         }else{
-            $response = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey);
+            $response = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey . '&' . $this->language . $paramsQuery['query']);
             $response = $response;
             $response ['key'] = null;
             return $response;        
