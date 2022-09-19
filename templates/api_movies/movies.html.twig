@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+{% include "api_movies/search.html.twig" %}
+<div class="container">
+  <div class="row">
+    {% if genre is defined %}
+    <div class="col-sm-4">
+     <fieldset class="fieldset">
+       <legend><span class="badge rounded-pill bg-primary">Choisissez votre film:</span></legend>
+         {% for nameMovie in genre %}
+          <div class="fetch-movie">
+           <input type="radio" id="genre" name="genre" value="{{nameMovie.id}}">
+           <label for="ganres">{{ nameMovie.name }} </label> 
+          </div>
+         {% endfor %}
+     </fieldset>
+    </div>
+    {% endif %}
+    <div id="list-movies" class="col-sm-8">
+    {% if movies is defined %}
+      {% if  key is not null %}
+		  <iframe  src= "https://www.youtube.com/embed/{{ key }}"> </iframe> 
+      {% endif %}
+       {% for movie in movies %}
+        <div class="movie" data-url="{{ absolute_url(path('veiw_movie', {id: movie.id})) }}">
+		      <div class="movie-preview">
+		          <img src=" https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}" alt="{{ movie.title }}" class="img-fluid rounded-start" alt="...">
+		      </div>
+		      <div class="movie-info">
+				      <h6>{{ movie.title }}</h6>
+              <span>{{ movie.release_date | date("Y")}}</span>
+			        <span class="badge rounded-pill bg-success">Popularité :   {{ movie.popularity}} ---- Vote : {{ movie.vote_average }}</span>
+			        <p class="card-text">{{movie.overview |slice(80)}}</p>
+          </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if movies_genre is defined %}
+     {% for movie in movies_genre %}
+        <div class="movie">
+		      <div class="movie-preview">
+		        <img src=" https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}" alt="{{ movie.title }}" class="img-fluid rounded-start" alt="...">
+		      </div>
+		      <div id="movie-{{ movie.id }}" class="movie-info">
+				    <h6>{{ movie.title }}</h6>
+            <span>{{ movie.release_date | date("Y")}}</span>
+			      <span class="badge rounded-pill bg-success">Popularité :   {{ movie.popularity}} ---- Vote : {{ movie.vote_average }}</span>
+			      <p class="card-text">{{movie.overview |slice(80)}}</p>
+            <span class="badge rounded-pill bg-primary">lire le détails</span>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% if movies is defined %}
+{% include "api_movies/config.js.html.twig" %}
+{% endif %}
+{% endblock %}
+
+
+

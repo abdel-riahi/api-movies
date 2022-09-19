@@ -1,0 +1,12 @@
+	
+    {% if movie is defined %}
+	<div class="modal-header">
+		<span class="badge rounded-pill bg-success">  {{ movie.name }} </span>	
+	</div>
+	<div class="modal-body">
+		<iframe width="420" height="345" src= "{{'https://www.youtube.com/embed/' ~  movie.key }}"> </iframe> 
+		<span class="badge rounded-pill bg-info text-dark">Site : {{ movie.site }}  </span>
+		<span class="badge rounded-pill bg-info text-dark">Publié a : {{ movie.published_at }}</span>
+		<span class="badge rounded-pill bg-info text-dark"> Type : {{ movie.type }} </span>
+	</div>
+    {% endif %}
