@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiCallServiceTest extends WebTestCase
 {
-    
- 
    /** @test */
    public function willCallServiceGenre()
    {
@@ -26,11 +24,7 @@ class ApiCallServiceTest extends WebTestCase
        $container->set('App\Service\ApiGenreService', $CallApiServiceMock);
        $client->request('GET', '/api/post/movies');
        $this->assertSame($response , $CallApiServiceMock->callApiGenre());
-
-
    }
-
-
     /** @test */
     public function willCallServiceMovies()
     {
@@ -43,7 +37,6 @@ class ApiCallServiceTest extends WebTestCase
         ->with($params)
         ->willReturn($response);
         $this->assertSame( $response , $serviceMock->callApi($params));
-    }
-    
+    }    
 }
 
