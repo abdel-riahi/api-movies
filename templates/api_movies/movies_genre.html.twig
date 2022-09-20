@@ -1,6 +1,6 @@
 {% if movies is defined %}
    {% for movie in movies %}
-      <div class="movie" data-url="{{ absolute_url(path('veiw_movie', {id: movie.id})) }}">
+      <div class="movie" data-url="{{ absolute_url(path('view_movie', {id: movie.id})) }}">
          <div class="movie-preview">
             <img src=" https://image.tmdb.org/t/p/w500/{{ movie.poster_path}}" alt="{{ movie.title }}" class="img-fluid rounded-start" alt="...">
          </div>
