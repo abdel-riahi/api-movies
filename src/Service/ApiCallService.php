@@ -10,7 +10,6 @@ class ApiCallService
     const DISCOVER = 'discover/movie';
     const SEARCH = 'search/movie';
     const POPULAR = 'movie/popular';
-
     private $httpClient;
     private $parameters; 
 
@@ -22,58 +21,68 @@ class ApiCallService
         $this->baseUrl = $this->parameters->get('app.baseUrl');
         $this->language = $this->parameters->get('app.language');
     }
-
-    private function getResponse($url){
-
-        try{
-        return $this->httpClient->request('GET',  $url)->toArray();
-        }catch (\Exception $ex) {
-        dd("erreur dans" . $ex->getFile() . "dans " . $ex->getLine() .":". $ex->getMessage());
-        exit;        
+    private function getResponse($response){
+        if ($response->getStatusCode() !== 200) {
+            throw new \Exception("le système attrape une exception :" . $response->getStatusCode());
+        }else{
+        $contentType = $response->getHeaders()['content-type'][0];
+        $content = $response->getContent();
+        $content = $response->toArray();
+        return $content;
+        }
     }
-    }
-
     private function execute(array $paramsQuery)
     {
-            if ($paramsQuery["slug"] === "movie/popular")
-        {
-            $listMovies = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey . '&' . $this->language);
-          if(!empty($listMovies)){
-            $response = $listMovies;
-            $movie = $this->getResponse($this->baseUrl . 'movie/' . $response['results'][0]['id']   . '/videos?api_key=' . $this->apiKey . '&' . $this->language);
-            $response ['key'] = $movie['results'][0]['key'];
-            return $response ;
-          }
-        }else{
-            $response = $this->getResponse($this->baseUrl . $paramsQuery['slug'] . '?api_key=' . $this->apiKey . '&' . $this->language . $paramsQuery['query']);
-            $response = $response;
-            $response ['key'] = null;
-            return $response;        
-    }
-}
-   private function searchMovies(array $paramsQuery): array
+        $response = $this->httpClient->request('GET', $this->baseUrl . $paramsQuery['slug'], [
+            'query' => [
+                'api_key' => $this->apiKey,
+                'language' => $this->language,
+                $paramsQuery['value'] => $paramsQuery['query'] ?? null],
+            ]);
+          
+        $contentList = $this->getResponse($response);
+       if(!empty($contentList)){
+            $id = $contentList['results'][0]['id'];
+            $response = $this->httpClient->request('GET', $this->baseUrl . 'movie/' . $id  . '/videos', [
+                'query' => [
+                    'api_key' => $this->apiKey,
+                    'language' => 'en-US'],
+            ]);
+            $contentMovie = $this->getResponse($response);
+            $contentList ['key'] = $contentMovie['results'][0]['key'];
+
+            return $contentList;
+            }
+    } 
+   private function searchMovies(array $paramsQuery)
     {
         $paramsQuery ['slug'] = self::SEARCH;
-        $paramsQuery ['query'] = '&query=' . $paramsQuery["query"];
+        $paramsQuery ['value'] = 'query' ;
         return $this->execute($paramsQuery);
     }
-    private function discoverMovies(array $paramsQuery): array
+    private function discoverMovies(array $paramsQuery)
     {
        $paramsQuery ['slug'] = self::DISCOVER;
-       $paramsQuery ['query'] = '&with_genres=' . $paramsQuery["query"];
+       $paramsQuery ['value'] = 'with_genres' ;
         return $this->execute($paramsQuery);
     }
-    private function serchMovieById(array $paramsQuery): array
-    {
-       $paramsQuery['slug'] ='movie/' . $paramsQuery ["query"] . '/' . $paramsQuery ["param"] ;
-       return $this->execute($paramsQuery);
-    }
-    private function getAllMovies(array $paramsQuery): array
+    private function getAllMovies(array $paramsQuery)
     {
         $paramsQuery ['slug'] = self::POPULAR;
+        $paramsQuery ['value'] = null ;
         return $this->execute($paramsQuery);
     }
-    
+    private function serchMovieById(array $paramsQuery)
+    {
+       $response = $this->httpClient->request('GET', $this->baseUrl . 'movie/' . $paramsQuery ["query"] . '/' . $paramsQuery ["param"] ,[
+            'query' => [
+                'api_key' => $this->apiKey,
+                'language' => 'language=en-US'
+                ],
+            ]); 
+        $content = $this->getResponse($response); 
+        return $content;
+    }
     /**
      * @param $parameters  array of parameters : baseUrl, laguageUsed, query, param
      * @return array
@@ -83,9 +92,8 @@ class ApiCallService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function callApi(array $paramsQuery): array
+    public function callApi(array $paramsQuery)
     {
-       
         switch ($paramsQuery["param"]) {
             case 'search':
                 $response = $this->searchMovies($paramsQuery);
