@@ -32,7 +32,7 @@ class ApiCallService
         return $content;
         }
     }
-    private function execute(array $paramsQuery) :array
+    private function execute(array $paramsQuery): array
     {
         $response = $this->httpClient->request('GET', $this->baseUrl . $paramsQuery['slug'], [
             'query' => [
@@ -54,7 +54,7 @@ class ApiCallService
             return $contentList;
             }
     } 
-    private function serchMovieById(array $paramsQuery) :array
+    private function serchMovieById(array $paramsQuery): array
     {
        $response = $this->httpClient->request('GET', $this->baseUrl . 'movie/' . $paramsQuery ["query"] . '/' . $paramsQuery ["param"] ,[
             'query' => [
@@ -74,7 +74,7 @@ class ApiCallService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function callApi(array $paramsQuery)
+    public function callApi(array $paramsQuery): array
     {
         switch ($paramsQuery["param"]) {
             case 'search':
