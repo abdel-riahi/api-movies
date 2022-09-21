@@ -1,4 +1,5 @@
 {% if movies is defined and key is defined %}
+  <iframe  src= "https://www.youtube.com/embed/{{ key }}"> </iframe> 
    {% for movie in movies %}
       <div class="movie" data-url="{{ absolute_url(path('view_movie', {id: movie.id})) }}">
          <div class="movie-preview">
