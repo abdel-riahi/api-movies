@@ -46,7 +46,8 @@ class ApiMoviesController extends AbstractController
         $param = "discover";
         $result =  $this->willCall($id, $param);
         return $this->render('api_movies/movies_genre.html.twig', [
-        "movies" =>$result["movies"]["results"]
+        "movies" =>$result["movies"]["results"],
+        "key" =>$result["movies"]["key"]
         ]);
     }
     private function willCall($query, $param) : array
