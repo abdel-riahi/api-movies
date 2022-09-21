@@ -20,10 +20,8 @@
     </div>
     {% endif %}
     <div id="list-movies" class="col-sm-8">
-    {% if movies is defined %}
-      {% if  key is defined %}
+    {% if movies is defined and key is defined %}
       <iframe  src= "https://www.youtube.com/embed/{{ key }}"> </iframe> 
-      {% endif %}
        {% for movie in movies %}
         <div class="movie" data-url="{{ absolute_url(path('view_movie', {id: movie.id})) }}">
           <div class="movie-preview">
