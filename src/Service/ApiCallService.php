@@ -21,7 +21,8 @@ class ApiCallService
         $this->baseUrl = $this->parameters->get('app.baseUrl');
         $this->language = $this->parameters->get('app.language');
     }
-    private function getResponse($response){
+    private function getResponse($response): array
+    {
         if ($response->getStatusCode() !== 200) {
             throw new \Exception("le système attrape une exception :" . $response->getStatusCode());
         }else{
@@ -31,7 +32,7 @@ class ApiCallService
         return $content;
         }
     }
-    private function execute(array $paramsQuery)
+    private function execute(array $paramsQuery): array
     {
         $response = $this->httpClient->request('GET', $this->baseUrl . $paramsQuery['slug'], [
             'query' => [
@@ -54,25 +55,25 @@ class ApiCallService
             return $contentList;
             }
     } 
-   private function searchMovies(array $paramsQuery)
+   private function searchMovies(array $paramsQuery): array
     {
         $paramsQuery ['slug'] = self::SEARCH;
         $paramsQuery ['value'] = 'query' ;
         return $this->execute($paramsQuery);
     }
-    private function discoverMovies(array $paramsQuery)
+    private function discoverMovies(array $paramsQuery): array
     {
        $paramsQuery ['slug'] = self::DISCOVER;
        $paramsQuery ['value'] = 'with_genres' ;
         return $this->execute($paramsQuery);
     }
-    private function getAllMovies(array $paramsQuery)
+    private function getAllMovies(array $paramsQuery): array
     {
         $paramsQuery ['slug'] = self::POPULAR;
         $paramsQuery ['value'] = null ;
         return $this->execute($paramsQuery);
     }
-    private function serchMovieById(array $paramsQuery)
+    private function serchMovieById(array $paramsQuery): array
     {
        $response = $this->httpClient->request('GET', $this->baseUrl . 'movie/' . $paramsQuery ["query"] . '/' . $paramsQuery ["param"] ,[
             'query' => [
@@ -92,7 +93,7 @@ class ApiCallService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function callApi(array $paramsQuery)
+    public function callApi(array $paramsQuery): array
     {
         switch ($paramsQuery["param"]) {
             case 'search':
